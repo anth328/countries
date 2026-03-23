@@ -1,8 +1,7 @@
-package ek.dk.countries.Controllers;
+package ek.dk.countries.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
