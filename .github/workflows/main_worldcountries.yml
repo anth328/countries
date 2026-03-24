@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy JAR app to Azure Web App - WorldCountries
+name: Build and deploy JAR app to Azure Web App - worldcountries
 
 on:
   push:
@@ -25,6 +25,10 @@ jobs:
           distribution: 'microsoft'
 
       - name: Build with Maven
+        env:
+          SPRING_DATASOURCE_URL: jdbc:mysql://${{secrets.PROD_DATABASE_URL}}/worldcountries
+          SPRING_DATASOURCE_USERNAME: ${{secrets.PROD_DATABASE_USERNAME}}
+          SPRING_DATASOURCE_PASSWORD: ${{secrets.PROD_DATABASE_PASSWORD}}
         run: mvn clean install
 
       - name: Upload artifact for deployment job
@@ -39,25 +43,24 @@ jobs:
     permissions:
       id-token: write #This is required for requesting the JWT
       contents: read #This is required for actions/checkout
-  
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: java-app
-      
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_B0441FC4F2424367869353E4B3AD6BA2 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_3DF3104913EC47E7A33B6116BBEB169F }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1437595E261942CFABCFC6B47ECB706C }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4CBD85A5FED64BE186836F66D838A0A2 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_F28FCA0B3141485EB58B457D1EB1F59F }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_A653178FE5FB44F5B9E53AF73DCF7CA6 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'WorldCountries'
+          app-name: 'countriesnodb'
           slot-name: 'Production'
           package: '*.jar'
-          
